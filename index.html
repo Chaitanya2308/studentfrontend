@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul class="row" id="root">
+    </ul>
+
+    <form onsubmit="sendStudentData()">
+        <label for="name">Enter the name</label>
+        <input type="text" id="name">
+        <button type="submit">Add data</button><br><br>
+      
+    </form>
+    <button onclick="getData()">Get Students Data</button>
+    <script>
+        async function sendStudentData()
+        {
+            let data={
+                name:document.getElementById("name").value
+            }
+            await fetch("https://studentbackend-derver.herokuapp.com/student",
+            {
+                method:"POST",
+                body:JSON.stringify(data),
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            })
+            alert("Data Added Successuflly")
+        }
+
+
+
+
+
+        async function getData()
+        {
+            let studentsData=await fetch("https://studentbackend-derver.herokuapp.com/students")
+            let data=await studentsData.json()
+            data.map(student=>
+            {
+                let li=document.createElement("li");
+                li.innerHTML=student.name;
+                document.getElementById("root").append(li);
+            })
+        }
+        // getData();
+    </script>
+</body>
+</html>
